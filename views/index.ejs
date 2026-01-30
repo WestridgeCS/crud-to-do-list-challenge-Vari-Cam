@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD To Do List</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<h1>To-Do List</h1>
+
+<form class="row" action="/create" method="POST">
+  <input
+    class="input"
+    type="text"
+    name="text"
+    placeholder="Add a new task..."
+    maxlength="120"
+    required
+  />
+  <button class="btn" type="submit">Add</button>
+</form>
+
+<section class="card">
+  <h2>Tasks</h2>
+
+  <ul class="list">
+    <% todos.forEach(todo => { %>
+      <% if (todo.deleted !== 'archived') { %>
+      <li class="item">
+
+        <!-- EDIT FORM (inline) -->
+        <form class="inline editForm" action="/<%= todo._id %>/edit" method="POST">
+          <input
+            type="text"
+            name="text"
+            class="text <%= todo.done ? 'done' : '' %>"
+            value="<%= todo.text %>"
+            maxlength="120"
+            required
+          />
+          <button class="small" type="submit">Save</button>
+        </form>
+
+        <div class="actions">
+          <form class="inline" action="/<%= todo._id %>/toggle" method="POST">
+            <button class="small" type="submit">
+              <%= todo.done ? 'Undo' : 'Done' %>
+            </button>
+          </form>
+
+          <form class="inline" action="/<%= todo._id %>/delete" method="POST">
+            <button class="small danger" type="submit">
+              <%= todo.deleted === 'no' ? 'Delete' : 'Confirm Delete' %>
+            </button>
+          </form>
+        </div>
+
+      </li>
+      <% } %>
+    <% }) %>
+  </ul>
+</section>
+
+</body>
+</html>
